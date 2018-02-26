@@ -30,19 +30,24 @@ class MainActivity : AppCompatActivity() {
         return@OnNavigationItemSelectedListener true
       }
       R.id.nfc -> {
-        naviagateToNfcFragment(null)
+        naviagateToNfc(null)
         return@OnNavigationItemSelectedListener true
       }
     }
     false
   }
 
-  private fun naviagateToNfcFragment(nfcText: String?) {
-    NFCFragment.navigateTo(supportFragmentManager, R.id.container, nfcText)
+  private fun naviagateToNfc(nfcText: String?) {
+    NFCFragment.navigateTo(supportFragmentManager, R.id.frame, nfcText)
+  }
+
+  private fun naviagateToQrCode() {
+
   }
 
   private fun getDataFromTag(intent: Intent?) {
     if (intent?.getAction()?.equals(NfcAdapter.ACTION_NDEF_DISCOVERED) == true) {
+      navigation.selectedItemId = R.id.nfc
       val msgs: Array<Parcelable> = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
       if (msgs == null || msgs.isEmpty()) {
         return
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity() {
       if (records == null || records.isEmpty()) {
         return
       }
-      naviagateToNfcFragment(Reader.readText(records[0]))
+      naviagateToNfc(Reader.readText(records[0]))
     }
   }
 }

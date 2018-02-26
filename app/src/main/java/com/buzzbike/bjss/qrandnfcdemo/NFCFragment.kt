@@ -6,10 +6,11 @@ import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_nfc.*
+import android.widget.TextView
 
 class NFCFragment : Fragment() {
   private var tagText: String? = null
+  private var label: TextView? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -20,8 +21,16 @@ class NFCFragment : Fragment() {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    label.setText(tagText)
-    return inflater!!.inflate(R.layout.fragment_nfc, container, false)
+    val view = inflater!!.inflate(R.layout.fragment_nfc, container, false)
+    label = view.findViewById(R.id.label)
+    if (tagText != null) {
+      setText(tagText)
+    }
+    return view
+  }
+
+  fun setText(tagText1: String?) {
+    label?.setText(tagText1)
   }
 
   companion object {
@@ -30,18 +39,30 @@ class NFCFragment : Fragment() {
 
     private fun newInstance(tagText: String?): NFCFragment {
       val fragment = NFCFragment()
-      val args = Bundle()
-      args.putString(NFC_TAG, tagText)
-      fragment.arguments = args
+      setArguments(tagText, fragment)
       return fragment
     }
 
+    private fun setArguments(tagText: String?, fragment: NFCFragment) {
+      val args = Bundle()
+      args.putString(NFC_TAG, tagText)
+      fragment.arguments = args
+    }
+
     fun navigateTo(fragmentManager: FragmentManager, container: Int, tagText: String?) {
-      val frag = fragmentManager.findFragmentByTag(TAG) ?: newInstance(tagText)
+      val frag = (fragmentManager.findFragmentByTag(TAG) ?: newInstance(tagText)) as NFCFragment
       if (frag.isAdded) {
+        setTag(tagText, frag)
         return
       }
-      fragmentManager.beginTransaction().replace(container, frag, TAG)
+      fragmentManager.beginTransaction().replace(container, frag, TAG).commit()
+    }
+
+    private fun setTag(tagText: String?, frag: NFCFragment) {
+      if (tagText != null) {
+        frag.setText(tagText)
+        setArguments(tagText, frag)
+      }
     }
   }
 }
