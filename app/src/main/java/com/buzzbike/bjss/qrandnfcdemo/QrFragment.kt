@@ -2,19 +2,16 @@ package com.buzzbike.bjss.qrandnfcdemo
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 class QrFragment : Fragment() {
-  private var mParam1: String? = null
-  private var mParam2: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     if (arguments != null) {
-      mParam1 = arguments.getString(ARG_PARAM1)
-      mParam2 = arguments.getString(ARG_PARAM2)
     }
   }
 
@@ -25,15 +22,19 @@ class QrFragment : Fragment() {
   }
 
   companion object {
-    private val ARG_PARAM1 = "param1"
-    private val ARG_PARAM2 = "param2"
-    fun newInstance(param1: String, param2: String): QrFragment {
+    private val TAG = QrFragment::class.simpleName
+
+    private fun newInstance(): QrFragment {
       val fragment = QrFragment()
-      val args = Bundle()
-      args.putString(ARG_PARAM1, param1)
-      args.putString(ARG_PARAM2, param2)
-      fragment.arguments = args
       return fragment
     }
+
+    fun navigateTo(fragmentManager: FragmentManager, container: Int) {
+      val frag = (fragmentManager.findFragmentByTag(QrFragment.TAG) ?: QrFragment.newInstance())
+      if (frag.isAdded) {
+        return
+      }
+      fragmentManager.beginTransaction().replace(container, frag, QrFragment.TAG).commit()
+    }
   }
-}// Required empty public constructor
+}

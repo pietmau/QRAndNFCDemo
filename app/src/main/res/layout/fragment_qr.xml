@@ -5,11 +5,9 @@
     tools:context="com.buzzbike.bjss.qrandnfcdemo.QrFragment"
     >
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <me.dm7.barcodescanner.zxing.ZXingScannerView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:text="@string/hello_blank_fragment"
       />
 
 </FrameLayout>

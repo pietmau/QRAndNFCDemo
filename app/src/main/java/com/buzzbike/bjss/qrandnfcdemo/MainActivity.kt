@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
   private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
     when (item.itemId) {
       R.id.qrcode -> {
+        navigateToQrCode()
         return@OnNavigationItemSelectedListener true
       }
       R.id.nfc -> {
@@ -41,8 +42,8 @@ class MainActivity : AppCompatActivity() {
     NFCFragment.navigateTo(supportFragmentManager, R.id.frame, nfcText)
   }
 
-  private fun naviagateToQrCode() {
-
+  private fun navigateToQrCode() {
+    QrFragment.navigateTo(supportFragmentManager, R.id.frame)
   }
 
   private fun getDataFromTag(intent: Intent?) {
