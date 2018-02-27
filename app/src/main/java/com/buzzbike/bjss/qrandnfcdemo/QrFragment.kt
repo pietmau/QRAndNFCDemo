@@ -1,13 +1,17 @@
 package com.buzzbike.bjss.qrandnfcdemo
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.zxing.Result
+import me.dm7.barcodescanner.zxing.ZXingScannerView
 
-class QrFragment : Fragment() {
+class QrFragment : Fragment(), ZXingScannerView.ResultHandler {
+  private var scannerView: ZXingScannerView? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -17,8 +21,8 @@ class QrFragment : Fragment() {
 
   override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    val view = inflater!!.inflate(R.layout.fragment_qr, container, false)
-    return view
+    scannerView = ZXingScannerView(activity as Context?)
+    return scannerView
   }
 
   companion object {
@@ -36,5 +40,20 @@ class QrFragment : Fragment() {
       }
       fragmentManager.beginTransaction().replace(container, frag, QrFragment.TAG).commit()
     }
+  }
+
+  public override fun onResume() {
+    super.onResume()
+    scannerView?.setResultHandler(this)
+    scannerView?.startCamera()
+  }
+
+  public override fun onPause() {
+    super.onPause()
+    scannerView?.stopCamera()
+  }
+
+  override fun handleResult(rawResult: Result) {
+    scannerView?.resumeCameraPreview(this)
   }
 }

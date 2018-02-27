@@ -1,22 +1,37 @@
 package com.buzzbike.bjss.qrandnfcdemo
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*  // <--!!!! ????
 
 
 class MainActivity : AppCompatActivity() {
+  private val PERMISSION_REQUEST: Int = 2
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     getDataFromTag(intent)
+    navigateToQrCode()
+    requestCameraPermission()
+  }
+
+  private fun requestCameraPermission() {
+    if (ContextCompat.checkSelfPermission(this,
+        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
+          PERMISSION_REQUEST)
+    }
   }
 
   override fun onNewIntent(intent: Intent?) {

@@ -2,12 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.buzzbike.bjss.qrandnfcdemo.QrFragment"
+    android:id="@+id/frame"
     >
-
-  <me.dm7.barcodescanner.zxing.ZXingScannerView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      />
 
 </FrameLayout>
