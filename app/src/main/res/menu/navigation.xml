@@ -11,4 +11,9 @@
       android:icon="@drawable/icons8_tags_24"
       android:title="@string/title_nfc"/>
 
+  <item
+      android:id="@+id/outside"
+      android:icon="@drawable/icons8_external_link_24"
+      android:title="@string/outside"/>
+
 </menu>

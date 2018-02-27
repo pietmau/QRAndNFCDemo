@@ -13,7 +13,6 @@ import com.google.zxing.Result
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
 
-
 class QrFragment : Fragment(), ZXingScannerView.ResultHandler {
   private var scannerView: ZXingScannerView? = null
   private var label: TextView? = null
@@ -24,7 +23,7 @@ class QrFragment : Fragment(), ZXingScannerView.ResultHandler {
     }
   }
 
-  override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
     val view = inflater!!.inflate(R.layout.fragment_qr, container, false)
     scannerView = view.findViewById<ZXingScannerView>(R.id.scanner)

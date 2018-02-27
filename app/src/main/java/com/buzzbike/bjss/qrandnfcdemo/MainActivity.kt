@@ -3,6 +3,7 @@ package com.buzzbike.bjss.qrandnfcdemo
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.os.Bundle
@@ -11,7 +12,8 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*  // <--!!!! ????
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +25,20 @@ class MainActivity : AppCompatActivity() {
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     navigateToQrCode()
     getDataFromTag(intent)
+    getDataFromQr()
     requestCameraPermission()
+  }
+
+  fun getDataFromQr() {
+    intent ?: return
+    FirebaseDynamicLinks.getInstance()
+        .getDynamicLink(intent)
+        .addOnSuccessListener(this) { pendingDynamicLinkData ->
+          pendingDynamicLinkData?.link?.let { uri ->
+            navigation.selectedItemId = R.id.outside
+            naviagateToOutside(uri)
+          }
+        }
   }
 
   private fun requestCameraPermission() {
@@ -49,8 +64,16 @@ class MainActivity : AppCompatActivity() {
         naviagateToNfc(null)
         return@OnNavigationItemSelectedListener true
       }
+      R.id.outside -> {
+        naviagateToOutside(null)
+        return@OnNavigationItemSelectedListener true
+      }
     }
     false
+  }
+
+  private fun naviagateToOutside(uri: Uri?) {
+    ExternalFragment.navigateTo(supportFragmentManager, R.id.frame, uri)
   }
 
   private fun naviagateToNfc(nfcText: String?) {
