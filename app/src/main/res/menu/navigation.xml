@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
   <item
-      android:id="@+id/qrcode"
-      android:icon="@drawable/icons8_qr_code_24"
-      android:title="@string/title_qr"/>
-
-  <item
       android:id="@+id/nfc"
-      android:icon="@drawable/icons8_tags_24"
+      android:icon="@drawable/icons8_tags"
       android:title="@string/title_nfc"/>
 
   <item
       android:id="@+id/outside"
-      android:icon="@drawable/icons8_external_link_24"
-      android:title="@string/outside"/>
+      android:icon="@drawable/icons8_qr_code_24"
+      android:title="@string/title_qr"/>
+
+  <item
+      android:id="@+id/qrcode"
+      android:icon="@drawable/icons8_camera_filled"
+      android:title="@string/reader"/>
 
 </menu>

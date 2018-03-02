@@ -1,10 +1,11 @@
 <resources>
   <string name="app_name">QRAndNFCDemo</string>
-  <string name="title_qr">QR</string>
+  <string name="title_qr">QR Code</string>
   <string name="title_dashboard">Dashboard</string>
-  <string name="title_nfc">NFC</string>
+  <string name="title_nfc">NFC Tag</string>
 
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="outside">QR from outside</string>
+  <string name="reader">Reader</string>
 </resources>
