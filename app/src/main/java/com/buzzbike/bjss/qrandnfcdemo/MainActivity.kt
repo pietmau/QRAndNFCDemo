@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-    naviagateToOutside(null)
+    goToQrOutside(null)
     getDataFromTag(intent)
     getDataFromQr()
     requestCameraPermission()
@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
         .getDynamicLink(intent)
         .addOnSuccessListener(this) { pendingDynamicLinkData ->
           pendingDynamicLinkData?.link?.let { uri ->
-            navigation.selectedItemId = R.id.outside
-            naviagateToOutside(uri)
+            goToQrOutside(uri)
           }
         }
   }
@@ -72,6 +71,11 @@ class MainActivity : AppCompatActivity() {
     false
   }
 
+  private fun goToQrOutside(uri: Uri?) {
+    navigation.selectedItemId = R.id.outside
+    naviagateToOutside(uri)
+  }
+
   private fun naviagateToOutside(uri: Uri?) {
     ExternalFragment.navigateTo(supportFragmentManager, R.id.frame, uri)
   }
@@ -86,18 +90,35 @@ class MainActivity : AppCompatActivity() {
 
   private fun getDataFromTag(intent: Intent?) {
     if (intent?.getAction()?.equals(NfcAdapter.ACTION_NDEF_DISCOVERED) == true) {
-      navigation.selectedItemId = R.id.nfc
-      val msgs: Array<Parcelable> = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-      if (msgs == null || msgs.isEmpty()) {
-        return
-      }
-      val records = (msgs.first() as NdefMessage).records
-      if (records == null || records.isEmpty()) {
-        return
-      }
-      naviagateToNfc(Reader.readText(records[0]))
+      tryGetNfcTag(intent)
+    } else {
+      tryGetUrlFromIntent()
     }
 
+  }
+
+  private fun tryGetNfcTag(intent: Intent) {
+    navigation.selectedItemId = R.id.nfc
+    val msgs: Array<Parcelable> = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+    if (msgs == null || msgs.isEmpty()) {
+      return
+    }
+    val records = (msgs.first() as NdefMessage).records
+    if (records == null || records.isEmpty()) {
+      return
+    }
+    naviagateToNfc(Reader.readText(records[0]))
+  }
+
+  fun tryGetUrlFromIntent() {
+    if (intent?.getAction()?.equals("android.intent.action.VIEW") != true) {
+      return
+    }
+    val uri = intent.data ?: return
+    if (uri.host?.equals("dc.thyngs.net") != true) {
+      return
+    }
+    goToQrOutside(uri)
   }
 
 }
