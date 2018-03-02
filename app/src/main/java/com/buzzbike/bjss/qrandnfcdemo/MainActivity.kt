@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-    navigateToQrCode()
+    naviagateToOutside(null)
     getDataFromTag(intent)
     getDataFromQr()
     requestCameraPermission()
@@ -97,5 +97,7 @@ class MainActivity : AppCompatActivity() {
       }
       naviagateToNfc(Reader.readText(records[0]))
     }
+
   }
+
 }

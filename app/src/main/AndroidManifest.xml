@@ -34,9 +34,6 @@
         <data
             android:host="www.google.com"
             android:scheme="https"/>
-        <data
-            android:host="dc.thyngs.net"
-            android:scheme="https"/>
 
       </intent-filter>
 
